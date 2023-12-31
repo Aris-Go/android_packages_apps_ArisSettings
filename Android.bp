@@ -1,0 +1,50 @@
+//
+// SPDX-FileCopyrightText: 2023 The LibreMobileOS Foundation
+// SPDX-FileCopyrightText: 2024 DerpFest AOSP
+// SPDX-FileCopyrightText: 2024 ArisGo
+// SPDX-License-Identifier: Apache-2.0
+//
+
+filegroup {
+    name: "ArisSettings-sources",
+    srcs: [
+        "src/**/*.java",
+        "src/**/*.kt",
+    ],
+
+    visibility: ["//packages/apps/Settings"],
+}
+
+genrule {
+   name: "ArisSettings-res",
+   tools: ["soong_zip"],
+   srcs: [
+       "res/**/*"
+   ],
+   out: ["ArisSettings-res.zip"],
+   cmd: "INPUTS=($(in)) && "
+       + "RES_DIR=$$(dirname $$(dirname $${INPUTS[0]})) && "
+       + "$(location soong_zip) -o $(out) -C $$RES_DIR -D $$RES_DIR"
+}
+
+filegroup {
+    name: "ArisSettings-manifest",
+    srcs: [
+        "AndroidManifest.xml",
+    ],
+}
+
+java_defaults {
+    name: "ArisSettings-defaults",
+
+    srcs: [":ArisSettings-sources"],
+    resource_zips: [":ArisSettings-res"],
+    additional_manifests: [":ArisSettings-manifest"],
+
+    libs: [
+        "framework-aris",
+    ],
+    static_libs: [
+        "VendorSupport-preference",
+    ],
+}

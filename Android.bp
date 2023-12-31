@@ -38,8 +38,11 @@ java_defaults {
     name: "ArisSettings-defaults",
 
     srcs: [":ArisSettings-sources"],
-    resource_zips: [":ArisSettings-res"],
     additional_manifests: [":ArisSettings-manifest"],
+    resource_zips: [
+        ":ArisSettings-res",
+        ":TouchGestures-res",
+    ],
 
     libs: [
         "framework-aris",
